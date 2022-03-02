@@ -6,22 +6,26 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Date;
 
-@Entity
-@Table(name = "forecasts")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Forecast {
+@Entity
+@Table(name = "appeals")
+public class Appeal {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	private String city;
-	private String description;
-	private String email;
-	private String temp;
+
+	private String date;
+
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	private User user;
 
 	@OneToOne
-	private Appeal appeal;
+	@JoinColumn(name = "forecast_id")
+	private Forecast forecast;
 }

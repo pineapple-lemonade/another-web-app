@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ForecastService {
-	Optional<ForecastDTO> saveForecast(Forecast forecast);
+	Optional<ForecastDTO> createForecast(Forecast forecast);
 	List<ForecastDTO> getForecasts();
+	List<ForecastDTO> getForecastsInCity(String city);
 }

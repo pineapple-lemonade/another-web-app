@@ -9,7 +9,6 @@ import ru.itis.ruzavin.helpers.JsonHelper;
 import ru.itis.ruzavin.helpers.WeatherHelper;
 import ru.itis.ruzavin.models.Forecast;
 import ru.itis.ruzavin.services.interfaces.ForecastService;
-import ru.itis.ruzavin.services.interfaces.UserService;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -38,7 +37,7 @@ public class WeatherController {
 				.city(json.get("name"))
 				.build();
 
-		Optional<ForecastDTO> forecastDTO = forecastService.saveForecast(forecast);
+		Optional<ForecastDTO> forecastDTO = forecastService.createForecast(forecast);
 
 		return forecastDTO.orElse(null);
 	}
@@ -46,5 +45,10 @@ public class WeatherController {
 	@GetMapping("/weather")
 	public List<ForecastDTO> getWeather(){
 		return forecastService.getForecasts();
+	}
+
+	@GetMapping("/weather/{city}")
+	public List<ForecastDTO> getForecastsByCity(@PathVariable String city){
+		return forecastService.getForecastsInCity(city);
 	}
 }
