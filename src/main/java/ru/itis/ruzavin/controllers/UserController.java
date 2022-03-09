@@ -1,31 +1,40 @@
 package ru.itis.ruzavin.controllers;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import ru.itis.ruzavin.dto.CreateUserDTO;
+import ru.itis.ruzavin.dto.SignInDTO;
 import ru.itis.ruzavin.dto.UserDTO;
-import ru.itis.ruzavin.models.User;
 import ru.itis.ruzavin.services.interfaces.UserService;
 
 import javax.validation.Valid;
 import java.util.Optional;
 
-@RestController
+@Controller
+@Slf4j
 @AllArgsConstructor
 public class UserController {
 	private UserService userService;
 
-	@PostMapping("/users")
-	public UserDTO createUser(@Valid @RequestBody CreateUserDTO form){
-		User user = User.builder()
-				.email(form.getEmail())
-				.password(form.getPassword())
-				.name(form.getName())
-				.build();
-		Optional<UserDTO> userDTO = userService.saveUser(user);
+	@PostMapping("/signUp")
+	public String createUser(@Valid CreateUserDTO form, Model model){
+		Optional<UserDTO> userDTO = userService.saveUser(form);
+		model.addAttribute("user", userDTO);
+		return "signUpSuccess";
+	}
 
-		return userDTO.orElse(null);
+	@PostMapping("/signIn")
+	public String signIn(SignInDTO form) {
+		Optional<UserDTO> userDTO = userService.signIn(form);
+		if (userDTO.isPresent()) {
+			return "signInSuccess";
+		} else {
+			return "signInFailed";
+		}
 	}
 }
