@@ -23,9 +23,4 @@ public class HelloController {
 		return "home";
 	}
 
-	@GetMapping("/signIn")
-	public String getLoginPage(Model model) {
-		model.addAttribute("user", new CreateUserDTO());
-		return "signIn";
-	}
 }

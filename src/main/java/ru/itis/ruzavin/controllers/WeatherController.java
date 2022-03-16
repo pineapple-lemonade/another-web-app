@@ -2,6 +2,7 @@ package ru.itis.ruzavin.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ru.itis.ruzavin.dto.ForecastDTO;
 import ru.itis.ruzavin.dto.ForecastFormDTO;
@@ -23,7 +24,7 @@ public class WeatherController {
 	private JsonHelper jsonHelper;
 
 	@PostMapping("/weather")
-	public ForecastDTO createWeather(@Valid @RequestBody ForecastFormDTO form){
+	public ForecastDTO createWeather(@Valid @RequestBody ForecastFormDTO form, Authentication auth){
 		Map<String, String> json;
 		try {
 			json = jsonHelper.parseJson(WeatherHelper.getWeather(form.getCity()));
@@ -31,7 +32,7 @@ public class WeatherController {
 			throw new IllegalArgumentException(e);
 		}
 		Forecast forecast = Forecast.builder()
-				.email(form.getEmail())
+				.email(auth.getName())
 				.temp(json.get("temp"))
 				.description(json.get("description"))
 				.city(json.get("name"))
