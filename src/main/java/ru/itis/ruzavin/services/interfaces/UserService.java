@@ -12,4 +12,5 @@ public interface UserService {
 	Optional<UserDTO> signIn(SignInDTO form);
 	boolean verify(String code);
 	void sendVerificationMail(String mail, String name, String code, String url);
+	UserDTO getUserById(Integer id);
 }

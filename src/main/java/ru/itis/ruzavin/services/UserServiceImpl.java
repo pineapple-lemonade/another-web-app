@@ -104,4 +104,9 @@ public class UserServiceImpl implements UserService {
 
 		javaMailSender.send(mimeMessage);
 	}
+
+	@Override
+	public UserDTO getUserById(Integer id) {
+		return UserDTO.fromModel(userRepository.getById(id));
+	}
 }
