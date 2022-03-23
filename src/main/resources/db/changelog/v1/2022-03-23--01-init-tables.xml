@@ -1,0 +1,93 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.6.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+    <changeSet author="Admin (generated)" id="1648046820437-1">
+        <createTable tableName="appeals">
+            <column autoIncrement="true" name="id" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="appeals_pkey"/>
+            </column>
+            <column name="date" type="VARCHAR(255)"/>
+            <column name="forecast_id" type="INTEGER"/>
+            <column name="user_id" type="INTEGER"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1648046820437-2">
+        <createTable tableName="forecasts">
+            <column autoIncrement="true" name="id" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="forecasts_pkey"/>
+            </column>
+            <column name="city" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="email" type="VARCHAR(255)"/>
+            <column name="temp" type="VARCHAR(255)"/>
+            <column name="appeal_id" type="INTEGER"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1648046820437-3">
+        <createTable tableName="roles">
+            <column autoIncrement="true" name="id" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="roles_pkey"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1648046820437-4">
+        <createTable tableName="users">
+            <column autoIncrement="true" name="id" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="users_pkey"/>
+            </column>
+            <column name="email" type="VARCHAR(255)"/>
+            <column name="is_enable" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="password" type="VARCHAR(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="verification_code" type="VARCHAR(64)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1648046820437-5">
+        <createTable tableName="users_appeals">
+            <column name="user_id" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="appeals_id" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1648046820437-6">
+        <addUniqueConstraint columnNames="appeals_id" constraintName="uk_61t5omu6ll4lou6hkx005ps3f" tableName="users_appeals"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1648046820437-7">
+        <createTable tableName="user_role">
+            <column name="user_id" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="user_role_pkey"/>
+            </column>
+            <column name="role_id" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="user_role_pkey"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1648046820437-8">
+        <addForeignKeyConstraint baseColumnNames="appeal_id" baseTableName="forecasts" constraintName="fkfafklr0ji1wcdjyjsfpw7acll" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="appeals" validate="true"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1648046820437-9">
+        <addForeignKeyConstraint baseColumnNames="appeals_id" baseTableName="users_appeals" constraintName="fkh74kwliw23ihpeo0dhvdluxi1" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="appeals" validate="true"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1648046820437-10">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_role" constraintName="fkj345gk1bovqvfame88rcx7yyx" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1648046820437-11">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="appeals" constraintName="fkkrsgddnmaqmfckj0tokx8xp7" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1648046820437-12">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="users_appeals" constraintName="fkqkyx7wxcb0kvl41lt70i0ky18" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1648046820437-13">
+        <addForeignKeyConstraint baseColumnNames="forecast_id" baseTableName="appeals" constraintName="fks5uuxfkc74lireo3hprvq1u8n" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="forecasts" validate="true"/>
+    </changeSet>
+    <changeSet author="Admin (generated)" id="1648046820437-14">
+        <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="user_role" constraintName="fkt7e7djp752sqn6w22i6ocqy6q" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="roles" validate="true"/>
+    </changeSet>
+</databaseChangeLog>
