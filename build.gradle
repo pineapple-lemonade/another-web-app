@@ -3,6 +3,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '2.6.3'
     id 'org.liquibase.gradle' version '2.0.4'
+    id 'jacoco'
 }
 
 group 'ru.itis.ruzavin'
@@ -53,5 +54,10 @@ liquibase {
 }
 
 test {
-    useJUnitPlatform()
+    useJUnit()
+    finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+    dependsOn test
 }
