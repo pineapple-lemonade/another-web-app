@@ -24,7 +24,7 @@ public class WeatherController {
 	private JsonHelper jsonHelper;
 
 	@PostMapping("/weather")
-	public ForecastDTO createWeather(@Valid @RequestBody ForecastFormDTO form, Authentication auth){
+	public ForecastDTO createWeather(@Valid @RequestBody ForecastFormDTO form){
 		Map<String, String> json;
 		try {
 			json = jsonHelper.parseJson(WeatherHelper.getWeather(form.getCity()));
@@ -32,7 +32,7 @@ public class WeatherController {
 			throw new IllegalArgumentException(e);
 		}
 		Forecast forecast = Forecast.builder()
-				.email(auth.getName())
+				.email(form.getEmail())
 				.temp(json.get("temp"))
 				.description(json.get("description"))
 				.city(json.get("name"))

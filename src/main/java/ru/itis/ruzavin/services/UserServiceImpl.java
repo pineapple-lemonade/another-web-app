@@ -11,7 +11,6 @@ import ru.itis.ruzavin.config.MailConfig;
 import ru.itis.ruzavin.dto.CreateUserDTO;
 import ru.itis.ruzavin.dto.SignInDTO;
 import ru.itis.ruzavin.dto.UserDTO;
-import ru.itis.ruzavin.helpers.PasswordHelper;
 import ru.itis.ruzavin.models.User;
 import ru.itis.ruzavin.repositories.UserRepository;
 import ru.itis.ruzavin.services.interfaces.UserService;
@@ -19,7 +18,9 @@ import ru.itis.ruzavin.services.interfaces.UserService;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -107,6 +108,17 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserDTO getUserById(Integer id) {
+		if (userRepository.getById(id) == null){
+			return null;
+		}
 		return UserDTO.fromModel(userRepository.getById(id));
 	}
+
+	@Override
+	public List<UserDTO> getAllUsers() {
+		return userRepository.findAll().stream()
+				.map(UserDTO::fromModel)
+				.collect(Collectors.toList());
+	}
+
 }

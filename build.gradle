@@ -3,6 +3,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '2.6.3'
     id 'org.liquibase.gradle' version '2.0.4'
+    id 'jacoco'
 }
 
 group 'ru.itis.ruzavin'
@@ -33,8 +34,9 @@ dependencies {
     testImplementation "com.h2database:h2:1.4.200"
 
     implementation 'org.codehaus.groovy:groovy-all:3.0.8'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:4.13'
+    testImplementation 'org.springframework.security:spring-security-test:5.6.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:4.13'
 }
 
 def props = new Properties()
@@ -53,5 +55,21 @@ liquibase {
 }
 
 test {
-    useJUnitPlatform()
+    useJUnit()
+    finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+    dependsOn test
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+                    'ru/itis/ruzavin/dto',
+                    'ru/itis/ruzavin/models',
+                    'ru/itis/ruzavin/security',
+                    'ru/itis/ruzavin/config',
+                    'ru/itis/ruzavin/helpers',
+            ])
+        }))
+    }
 }

@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface AppealRepository extends JpaRepository<Appeal, Integer> {
 	List<Appeal> getAppealsByUserId(Integer id);
-	List<Appeal> getAppealsByForecastCityIgnoreCase(String city);
+	List<Appeal> getAppealsByForecastCity(String city);
 }

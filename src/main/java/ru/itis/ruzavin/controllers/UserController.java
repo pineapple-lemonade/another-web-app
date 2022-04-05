@@ -6,15 +6,16 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import ru.itis.ruzavin.dto.CreateUserDTO;
-import ru.itis.ruzavin.dto.SignInDTO;
 import ru.itis.ruzavin.dto.UserDTO;
 import ru.itis.ruzavin.services.interfaces.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.awt.*;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,7 +29,7 @@ public class UserController {
 	public String createUser(@Valid @ModelAttribute(name = "user") CreateUserDTO form, Model model, HttpServletRequest request){
 		String url = request.getRequestURL().toString().replace(request.getServletPath(), "");
 		Optional<UserDTO> userDTO = userService.saveUser(form, url);
-		model.addAttribute("user", userDTO);
+		model.addAttribute("user", userDTO.get());
 		return "signUpSuccess";
 	}
 
@@ -41,13 +42,4 @@ public class UserController {
 		}
 	}
 
-	@GetMapping(value = "/user",produces = MediaType.APPLICATION_JSON_VALUE)
-	public List<UserDTO> getAllUsers() {
-		return getAllUsers();
-	}
-
-	@GetMapping(value = "/user/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public UserDTO getUserById(@PathVariable Integer id) {
-		return userService.getUserById(id);
-	}
 }

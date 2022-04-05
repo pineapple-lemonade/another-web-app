@@ -17,6 +17,10 @@ public class AppealServiceImpl implements AppealService {
 
 	@Override
 	public AppealDTO createAppeal(Appeal appeal) {
+		if (appealRepository.save(appeal) == null){
+			return null;
+		}
+
 		return AppealDTO.fromModel(appealRepository.save(appeal));
 	}
 
@@ -27,6 +31,6 @@ public class AppealServiceImpl implements AppealService {
 
 	@Override
 	public List<AppealDTO> getAppealsByCity(String city) {
-		return AppealDTO.fromModel(appealRepository.getAppealsByForecastCityIgnoreCase(city));
+		return AppealDTO.fromModel(appealRepository.getAppealsByForecastCity(city));
 	}
 }
