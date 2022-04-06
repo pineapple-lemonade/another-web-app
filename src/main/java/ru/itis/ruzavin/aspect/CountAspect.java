@@ -18,18 +18,18 @@ public class CountAspect {
 
 	private final static Map<String,Integer> amountOfCalls = new HashMap<>();
 
-//	@Pointcut("execution(* ru.itis.ruzavin.controllers.*.*(..))")
-//    public void logAmountMethodsExecution() {
+	@Pointcut("execution(* ru.itis.ruzavin.*.*.*(..))")
+    public void logAmountMethodsExecution() {
+
+    }
+
+//	@Pointcut("@annotation(CountCallsOfMethod)")
+//	public void logAmountMethodsExecution() {
 //
-//    }
-
-	@Pointcut("@annotation(CountCallsOfMethod)")
-	public void logAmountMethodsExecution() {
-
-	}
+//	}
 
 	@Around("logAmountMethodsExecution()")
-	public void logAllMethods(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+	public Object logAllMethods(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
 		MethodSignature methodSignature = (MethodSignature) proceedingJoinPoint.getSignature();
 
 		String methodName = methodSignature.getName();
@@ -45,5 +45,7 @@ public class CountAspect {
 		Integer amountAfter = amountOfCalls.get(methodName);
 
 		log.info("method with signature {} calls {} times",methodName, amountAfter);
+
+		return proceedingJoinPoint.proceed();
 	}
 }
