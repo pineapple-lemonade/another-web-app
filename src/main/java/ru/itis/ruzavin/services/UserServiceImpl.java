@@ -2,6 +2,7 @@ package ru.itis.ruzavin.services;
 
 import lombok.RequiredArgsConstructor;
 import net.bytebuddy.utility.RandomString;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -27,7 +28,9 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
 	private final UserRepository userRepository;
-	private final BCryptPasswordEncoder encoder;
+
+	private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
 	private final JavaMailSender javaMailSender;
 	private final MailConfig mailConfig;
 
@@ -40,7 +43,7 @@ public class UserServiceImpl implements UserService {
 					.email(form.getEmail())
 					.name(form.getName())
 					.verificationCode(code)
-					.password(encoder.encode(form.getPassword()))
+					.password(bCryptPasswordEncoder.encode(form.getPassword()))
 					.isEnable(false)
 					.build();
 			userRepository.save(user);
@@ -58,7 +61,7 @@ public class UserServiceImpl implements UserService {
 	public Optional<UserDTO> signIn(SignInDTO form) {
 		User user = userRepository.findByEmail(form.getEmail());
 		if (user != null) {
-			if (encoder.encode(form.getPassword()).equals(user.getPassword())) {
+			if (bCryptPasswordEncoder.encode(form.getPassword()).equals(user.getPassword())) {
 				UserDTO userDTO = UserDTO.fromModel(user);
 				return Optional.of(userDTO);
 			}
