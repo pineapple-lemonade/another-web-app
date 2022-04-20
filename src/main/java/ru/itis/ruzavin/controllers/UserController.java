@@ -1,5 +1,9 @@
 package ru.itis.ruzavin.controllers;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.repository.query.Param;
@@ -25,6 +29,15 @@ import java.util.Optional;
 public class UserController {
 	private UserService userService;
 
+	@Operation(summary = "Create user")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "User was created",
+					content = {
+							@Content(mediaType = "text/html"
+							)
+					}
+			)
+	})
 	@PostMapping("/signUp")
 	public String createUser(@Valid @ModelAttribute(name = "user") CreateUserDTO form, Model model, HttpServletRequest request){
 		String url = request.getRequestURL().toString().replace(request.getServletPath(), "");
@@ -33,6 +46,15 @@ public class UserController {
 		return "signUpSuccess";
 	}
 
+	@Operation(summary = "Verify user")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "User was verified",
+					content = {
+							@Content(mediaType = "text/html"
+							)
+					}
+			)
+	})
 	@GetMapping("/verification")
 	public String verify(@Param("code") String code) {
 		if (userService.verify(code)) {
